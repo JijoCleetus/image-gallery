@@ -4,10 +4,10 @@ import { createClient } from '@supabase/supabase-js'
 
 
 const ImageGallery = () => {
-  const env =import.meta.env;
-  const bucketUrl = 'https://mrmpvkbfmfmlktsinzvn.supabase.co/storage/v1/object/public/image-gallery/'
+  const env = import.meta.env;
   const [images, setImages] = useState([]);
-  const client = createClient(env.VITE_SUPABASE_URL, env.VITE_SUPABSE_ANON_KEY)
+  const [selectedImage, setSelectedImage] = useState({name:''});
+  const client = createClient(env.VITE_SUPABASE_COMPANY_URL, env.VITE_SUPABSE_ANON_KEY)
 
 
   useEffect(() => {
@@ -21,20 +21,35 @@ const ImageGallery = () => {
       sortBy: { column: 'name', order: 'asc' }
     })
     setImages(list.data as []);
+    Array.isArray(list.data) && setSelectedImage(list.data[0]);
+  }
+
+  const trimName=(name:string)=>{
+    return name.split('.')[0]
   }
 
 
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-      {
+    <div className="grid gap-4 p-10" >
+      <div>
+        <img className=" h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[800px]"
+          src={env.VITE_SUPABASE_BUCKET_URL + selectedImage?.name}
+          alt="" />
+      </div>
+      <div className="grid grid-cols-5 gap-4">
+       {
         images.map((image: any) => (
-          <div key={image.id} className="rounded overflow-hidden shadow-lg">
-            <img className="w-full" src={bucketUrl + image.name} alt={image.name} />
-          </div>
-        )
-        )
-      }
-    </div>
+          <div key={image.id} onClick={()=>setSelectedImage(image)}>
+          <img
+            src={env.VITE_SUPABASE_BUCKET_URL + image.name}
+            className="object-cover object-center h-20 max-w-full rounded-lg cursor-pointer" alt={image.name} />
+            <label>{trimName(image.name)}</label>
+        </div>
+        ))
+       }
+      </div>
+    </div >
 
   );
 };
