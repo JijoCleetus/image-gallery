@@ -1,6 +1,8 @@
 // src/components/ImageGallery.js
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js'
+import { createPortal } from 'react-dom';
+import NavbarComponent from '../components/NavbarComponent';
 
 
 const ImageGallery = () => {
@@ -28,10 +30,12 @@ const ImageGallery = () => {
     return name.split('.')[0]
   }
 
+  const element:HTMLElement =document.getElementById('navbar') as HTMLElement;
+
 
 
   return (
-    <div className="grid gap-4 p-10" >
+    <div className="grid gap-4" >
       <div>
         <img className=" h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[800px]"
           src={env.VITE_SUPABASE_BUCKET_URL + selectedImage?.name}
