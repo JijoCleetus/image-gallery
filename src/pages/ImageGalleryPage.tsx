@@ -1,9 +1,6 @@
 // src/components/ImageGallery.js
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js'
-import { createPortal } from 'react-dom';
-import NavbarComponent from '../components/NavbarComponent';
-
 
 const ImageGallery = () => {
   const env = import.meta.env;
@@ -30,7 +27,6 @@ const ImageGallery = () => {
     return name.split('.')[0]
   }
 
-  const element:HTMLElement =document.getElementById('navbar') as HTMLElement;
 
 
 
